@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 import { Hero } from '../hero';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor, NgIf, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { HEROES } from '../mockheroes';
 @Component({
   selector: 'app-heroes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgFor, NgIf, UpperCasePipe, FormsModule],
   templateUrl: './heroes.component.html',
   styleUrl: './heroes.component.css',
 })
 export class HeroesComponent {
-  hero: Hero = {
-    id: 1,
-    name: 'Windstorm',
-  };
+  heroes = HEROES;
+  selectedHero: Hero | undefined;
+  onSelect(hero: Hero) {
+    this.selectedHero = hero;
+    console.log('Clicked!!', hero.name)
+  }
 }
