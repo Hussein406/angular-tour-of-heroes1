@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { NgIf, UpperCasePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgIf, UpperCasePipe, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {Hero} from '../hero';
+import { Hero } from '../hero';
+import { ActivatedRoute } from '@angular/router';
+import { HeroService } from '../hero.service';
 
 @Component({
   standalone: true,
@@ -10,6 +12,27 @@ import {Hero} from '../hero';
   styleUrl: './hero-detail.component.css',
   imports: [FormsModule, UpperCasePipe, NgIf],
 })
-export class HeroDetailComponent {
-  @Input() hero?: Hero;
+export class HeroDetailComponent implements OnInit {
+  hero: Hero | undefined;
+
+  constructor(
+    private route: ActivatedRoute,
+    private heroService: HeroService,
+    private location: Location
+  ) {}
+
+  ngOnInit(): void {
+    this.getHero();
+  }
+  // getHero(): void {
+  //   const id = Number(this.route.snapshot.paramMap.get('id'));
+  //   this.heroService.getHero(id)
+  //     .subscribe((hero) => (this.hero = hero));
+  // }
+
+  getHero(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.heroService.getHero(id)
+      .subscribe(hero => this.hero = hero);
+  }
 }
